@@ -1,0 +1,25 @@
+image: ubuntu
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+
+stages:
+  - build
+
+before_script:
+  # Display Docker Info.
+  - docker info
+  # Login to docker.
+  - echo "$CI_REGISTRY_PASSWORD" | docker login --username "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+
+build:
+  stage: build
+  script:
+    # Build the image.
+    - docker build . --tag $CI_REGISTRY_IMAGE
+    - docker push $CI_REGISTRY_IMAGE

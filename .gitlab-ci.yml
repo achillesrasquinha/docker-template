@@ -21,5 +21,8 @@ build:
   stage: build
   script:
     # Build the image.
-    - docker build . --tag $CI_REGISTRY_IMAGE
+    - |
+      docker build . \
+        --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_BEFORE_SHA
+        --tag $CI_REGISTRY_IMAGE:latest
     - docker push $CI_REGISTRY_IMAGE

@@ -4,6 +4,9 @@ on: [push, pull_request]
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  DOCKER_REGISTRY: ghcr.io
+  DOCKER_USERNAME: ${{ github.actor }}
+  PROJECT: {{ cookiecutter.project }}
 
 jobs:
   build:
@@ -17,7 +20,7 @@ jobs:
           echo "Checking out $GITHUB_REF..."
       - name: Login to Registry
         run: |
-          echo $GITHUB_TOKEN | docker login ghcr.io -u ${{ github.repository }} --password-stdin
+          echo $GITHUB_TOKEN | docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME --password-stdin
       - name: Build Image
         run: |
           make build

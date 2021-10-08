@@ -3,13 +3,13 @@ BASEDIR					= $(shell pwd)
 
 PROJDIR					= ${BASEDIR}
 
-DOCKER_IMAGE			= ${DOCKER_HUB_USERNAME}/${PROJECT}
+DOCKER_IMAGE			= ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${PROJECT}
 
 build: ## Build Docker Image.
 	@docker build $(PROJDIR) --tag $(DOCKER_IMAGE)
 
-push: ## Push Docker Image to Registry
-	@docker push $(DOCKER_IMAGE)
+push: ## Push Docker Image to Registry.
+	@docker push $(DOCKER_IMAGE)$(DOCKER_IMAGE_TAG)
 
 run:
 	@docker run $(ARGS) $(DOCKER_IMAGE)
